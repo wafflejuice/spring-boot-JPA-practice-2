@@ -50,5 +50,4 @@ public class MemberService {
         Member member = memberRepository.findOne(id);
         member.setName(name);
     }
-
 }
