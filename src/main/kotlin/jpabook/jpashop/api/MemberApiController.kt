@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.NotEmpty
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.service.MemberService
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -14,6 +15,30 @@ import org.springframework.web.bind.annotation.RestController
 class MemberApiController(
     private val memberService: MemberService,
 ) {
+    @GetMapping("/api/v1/members")
+    fun membersV1(): MutableList<Member>? {
+        return memberService.findMembers()
+    }
+
+    @GetMapping("/api/v2/members")
+    fun membersV2(): Result<List<MemberDto>> {
+        val foundMembers = memberService.findMembers()
+        val collect = foundMembers.map {
+            MemberDto(
+                name = it.name,
+            )
+        }
+
+        return Result(data = collect)
+    }
+
+    data class Result<T>(
+        val data: T,
+    )
+
+    data class MemberDto(
+        val name: String,
+    )
 
     @PostMapping("/api/v1/members")
     fun saveMemberV1(@RequestBody @Valid member: Member): CreateMemberResponse {
