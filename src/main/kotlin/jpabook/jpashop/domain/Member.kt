@@ -20,5 +20,5 @@ class Member(
     val address: Address?,
 
     @OneToMany(mappedBy = "member")
-    val orders: List<Order> = emptyList(),
+    val orders: MutableList<Order> = mutableListOf(),
 )
