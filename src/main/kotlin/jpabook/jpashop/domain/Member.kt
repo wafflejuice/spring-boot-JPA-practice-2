@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -19,6 +20,7 @@ class Member(
     @Embedded
     val address: Address?,
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     val orders: MutableList<Order> = mutableListOf(),
 )

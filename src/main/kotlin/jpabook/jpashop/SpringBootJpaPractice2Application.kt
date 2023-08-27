@@ -17,7 +17,7 @@ fun hibernate5Module(): Hibernate5Module {
     val hibernate5Module = Hibernate5Module()
 
     //강제 지연 로딩 설정
-    hibernate5Module.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, true);
+    hibernate5Module.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, true)
 
     return hibernate5Module
 }
