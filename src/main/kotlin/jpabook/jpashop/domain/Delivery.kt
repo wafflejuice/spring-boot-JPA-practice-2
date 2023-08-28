@@ -16,6 +16,7 @@ class Delivery(
 
     @Embedded
     val address: Address?,
+
     @Enumerated(EnumType.STRING)
     val status: DeliveryStatus? = null, //ENUM [READY(준비), COMP(배송)])
 )
