@@ -29,6 +29,15 @@ class OrderSimpleApiController(
         }
     }
 
+    @GetMapping("/api/v3/simple-orders")
+    fun ordersV3(): List<SimpleOrderDto> {
+        val orders = orderRepository.findAllWithMemberDelivery()
+
+        return orders.map { order ->
+            SimpleOrderDto.of(order = order)
+        }
+    }
+
     data class SimpleOrderDto(
         val orderId: Long,
         val name: String,
