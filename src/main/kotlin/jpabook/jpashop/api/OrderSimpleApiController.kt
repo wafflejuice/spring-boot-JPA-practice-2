@@ -1,17 +1,17 @@
 package jpabook.jpashop.api
 
-import jpabook.jpashop.domain.Address
 import jpabook.jpashop.domain.Order
-import jpabook.jpashop.domain.OrderStatus
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 class OrderSimpleApiController(
     private val orderRepository: OrderRepository,
+    private val orderSimpleQueryRepository: OrderSimpleQueryRepository,
 ) {
 
     @GetMapping("/api/v1/simple-orders")
@@ -21,39 +21,25 @@ class OrderSimpleApiController(
     }
 
     @GetMapping("/api/v2/simple-orders")
-    fun ordersV2(): List<SimpleOrderDto> {
+    fun ordersV2(): List<OrderSimpleQueryDto> {
         val orders = orderRepository.findAllByString(OrderSearch())
 
         return orders.map { order ->
-            SimpleOrderDto.of(order = order)
+            OrderSimpleQueryDto.of(order = order)
         }
     }
 
     @GetMapping("/api/v3/simple-orders")
-    fun ordersV3(): List<SimpleOrderDto> {
+    fun ordersV3(): List<OrderSimpleQueryDto> {
         val orders = orderRepository.findAllWithMemberDelivery()
 
         return orders.map { order ->
-            SimpleOrderDto.of(order = order)
+            OrderSimpleQueryDto.of(order = order)
         }
     }
 
-    data class SimpleOrderDto(
-        val orderId: Long,
-        val name: String,
-        val orderDate: LocalDateTime,
-        val orderStatus: OrderStatus,
-        val address: Address?,
-    ) {
-        companion object {
-            fun of(order: Order) =
-                SimpleOrderDto(
-                    orderId = order.id,
-                    name = order.member.name,
-                    orderDate = order.orderDate,
-                    orderStatus = order.status,
-                    address = order.delivery.address,
-                )
-        }
+    @GetMapping("/api/v4/simple-orders")
+    fun ordersV4(): List<OrderSimpleQueryDto> {
+        return orderSimpleQueryRepository.findOrderDtos()
     }
 }
