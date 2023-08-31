@@ -18,6 +18,7 @@ class OrderItem(
     @GeneratedValue
     @Column(name = "order_item_id")
     val id: Long = 0L,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     val item: Item, //주문 상품
@@ -26,6 +27,7 @@ class OrderItem(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     var order: Order? = null, //주문
+
     val orderPrice: Int, //주문 가격
     val count: Int, //주문 수량
 ) {
