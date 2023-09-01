@@ -30,7 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.15.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5-jakarta")
 
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")

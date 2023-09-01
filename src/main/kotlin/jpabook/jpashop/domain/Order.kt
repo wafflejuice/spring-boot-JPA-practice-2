@@ -29,14 +29,18 @@ class Order(
 ) {
 
     companion object {
-        fun createOrder(member: Member, delivery: Delivery, orderItems: List<OrderItem>): Order =
-            Order(
+        fun createOrder(member: Member, delivery: Delivery, orderItems: List<OrderItem>): Order {
+            val order = Order(
                 member = member,
-                orderItems = orderItems.toMutableList(),
                 delivery = delivery,
                 orderDate = LocalDateTime.now(),
                 status = OrderStatus.ORDER,
             )
+            orderItems.forEach {
+                order.addOrderItem(it)
+            }
+            return order
+        }
     }
 
     fun addOrderItem(orderItem: OrderItem) {

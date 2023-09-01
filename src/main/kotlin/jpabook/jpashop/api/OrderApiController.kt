@@ -42,17 +42,35 @@ class OrderApiController(
         val orderDate: LocalDateTime,
         val orderStatus: OrderStatus,
         val address: Address?,
-        val orderItems: List<OrderItem>,
+        val orderItems: List<OrderItemDto>,
     ) {
         companion object {
-            fun of(order: Order) =
-                OrderDto(
+            fun of(order: Order): OrderDto {
+                order.orderItems.map { it.item.name }
+
+                return OrderDto(
                     orderId = order.id,
                     name = order.member.name,
                     orderDate = order.orderDate,
                     orderStatus = order.status,
                     address = order.delivery.address,
-                    orderItems = order.orderItems,
+                    orderItems = order.orderItems.map { OrderItemDto.of(it) },
+                )
+            }
+        }
+    }
+
+    data class OrderItemDto(
+        val itemName: String,
+        val orderPrice: Int,
+        val count: Int,
+    ) {
+        companion object {
+            fun of(orderItem: OrderItem) =
+                OrderItemDto(
+                    itemName = orderItem.item.name,
+                    orderPrice = orderItem.orderPrice,
+                    count = orderItem.count,
                 )
         }
     }
