@@ -36,6 +36,13 @@ class OrderApiController(
         return collect
     }
 
+    @GetMapping("/api/v3/orders")
+    fun ordersV3(): List<OrderDto> {
+        val orders = orderRepository.findAllWithItem()
+        val collect = orders.map { OrderDto.of(it) }
+        return collect
+    }
+
     data class OrderDto(
         val orderId: Long,
         val name: String,
