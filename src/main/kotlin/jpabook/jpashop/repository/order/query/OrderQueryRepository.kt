@@ -41,10 +41,22 @@ class OrderQueryRepository(
 
         val orderIds = toOrderIds(result)
         val orderItemMap = findOrderItemMap(orderIds)
-        
+
         result.forEach { it.orderItems = orderItemMap[it.orderId]!! }
 
         return result
+    }
+
+    fun findAllByDto_flat(): List<OrderFlatDto> {
+        return em.createQuery(
+            "select new" +
+                    " jpabook.jpashop.repository.order.query.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderPrice, oi.count)" +
+                    " from Order o" +
+                    " join o.member m" +
+                    " join o.delivery d" +
+                    " join o.orderItems oi" +
+                    " join oi.item i", OrderFlatDto::class.java
+        ).resultList
     }
 
     private fun toOrderIds(result: List<OrderQueryDto>): List<Long> =

@@ -12,4 +12,18 @@ data class OrderQueryDto(
     val address: Address,
 ) {
     var orderItems: List<OrderItemQueryDto> = emptyList()
+
+    override fun hashCode(): Int {
+        return orderId.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null) return false
+        if (this === other) return true
+        if (other is OrderQueryDto) {
+            return orderId == other.orderId
+        }
+
+        return false
+    }
 }

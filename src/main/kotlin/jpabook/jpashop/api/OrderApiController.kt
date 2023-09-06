@@ -6,12 +6,17 @@ import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.domain.OrderStatus
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
+import jpabook.jpashop.repository.order.query.OrderItemQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
+import java.util.stream.Collectors.groupingBy
+import java.util.stream.Collectors.mapping
+import java.util.stream.Collectors.toList
+
 
 @RestController
 class OrderApiController(
@@ -65,6 +70,24 @@ class OrderApiController(
     @GetMapping("/api/v5/orders")
     fun ordersV5(): List<OrderQueryDto> {
         return orderQueryRepository.findAllByDto_optimization()
+    }
+
+    @GetMapping("/api/v6/orders")
+    fun ordersV6(): List<OrderQueryDto> {
+        val flats = orderQueryRepository.findAllByDto_flat()
+
+        return flats.stream()
+            .collect(
+                groupingBy(
+                    { o -> OrderQueryDto(o.orderId, o.name, o.orderDate, o.orderStatus, o.address) },
+                    mapping({ o -> OrderItemQueryDto(o.orderId, o.itemName, o.orderPrice, o.count) }, toList())
+                )
+            )
+            .map { e ->
+                OrderQueryDto(e.key.orderId, e.key.name, e.key.orderDate, e.key.orderStatus, e.key.address).also {
+                    it.orderItems = e.value
+                }
+            }
     }
 
     data class OrderDto(
