@@ -8,13 +8,13 @@ import jpabook.jpashop.domain.Member
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.domain.item.Book
-import jpabook.jpashop.repository.MemberRepository
+import jpabook.jpashop.repository.MemberRepositoryOld
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
 class InitDb(
-    private val memberRepository: MemberRepository,
+    private val memberRepositoryOld: MemberRepositoryOld,
     private val initService: InitService,
 ) {
     @PostConstruct
