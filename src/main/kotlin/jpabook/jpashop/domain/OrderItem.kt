@@ -31,6 +31,10 @@ class OrderItem(
     val orderPrice: Int, //주문 가격
     val count: Int, //주문 수량
 ) {
+    fun cancel() {
+        item.addStock(count)
+    }
+
     companion object {
         fun createOrderItem(item: Item, orderPrice: Int, count: Int): OrderItem {
             val orderItem = OrderItem(

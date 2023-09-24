@@ -25,7 +25,7 @@ class Order(
     val orderDate: LocalDateTime, //주문시간
 
     @Enumerated(EnumType.STRING)
-    val status: OrderStatus, //주문상태 [ORDER, CANCEL]
+    var status: OrderStatus, //주문상태 [ORDER, CANCEL]
 ) {
 
     companion object {
@@ -46,5 +46,13 @@ class Order(
     fun addOrderItem(orderItem: OrderItem) {
         orderItems.add(orderItem)
         orderItem.order = this
+    }
+
+    fun cancel() {
+        check(delivery.status != DeliveryStatus.COMP) { "이미 배송완료된 상품은 취소가 불가능합니다." }
+        this.status = OrderStatus.CANCEL
+        for (orderItem in orderItems) {
+            orderItem.cancel()
+        }
     }
 }

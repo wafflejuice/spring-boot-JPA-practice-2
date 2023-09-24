@@ -1,7 +1,15 @@
 package jpabook.jpashop.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.OneToOne
 
 @Entity
 class Delivery(
@@ -15,8 +23,8 @@ class Delivery(
     var order: Order? = null,
 
     @Embedded
-    val address: Address?,
+    var address: Address?,
 
     @Enumerated(EnumType.STRING)
-    val status: DeliveryStatus? = null, //ENUM [READY(준비), COMP(배송)])
+    var status: DeliveryStatus? = null, //ENUM [READY(준비), COMP(배송)])
 )

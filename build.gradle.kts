@@ -5,9 +5,11 @@ plugins {
 
     id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management") version "1.1.0"
+    id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "jpabook"
@@ -32,9 +34,12 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5-jakarta")
 
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
-
+    
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     annotationProcessor("org.projectlombok:lombok")
